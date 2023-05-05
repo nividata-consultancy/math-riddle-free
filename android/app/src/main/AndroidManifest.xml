@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mathgame.riddles.puzzles.brain.teasers.math_riddle">
+    package="com.mathgame.riddles.puzzles.brain.teasers">
    <application
         android:label="math_riddle"
         android:name="${applicationName}"

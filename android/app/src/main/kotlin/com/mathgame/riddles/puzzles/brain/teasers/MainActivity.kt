@@ -1,4 +1,4 @@
-package com.mathgame.riddles.puzzles.brain.teasers.math_riddle
+package com.mathgame.riddles.puzzles.brain.teasers
 
 import io.flutter.embedding.android.FlutterActivity
 
