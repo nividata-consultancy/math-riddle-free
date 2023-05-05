@@ -1,6 +1,6 @@
 class AppAssets {
   AppAssets._();
 
-  static final icAppLogo = "assets/images/ic_app_logo.png";
-  static final bgMain = "assets/images/bg_main.png";
+  static const icAppLogo = "assets/ic_app_logo.png";
+  static const bgMain = "assets/bg_main.png";
 }

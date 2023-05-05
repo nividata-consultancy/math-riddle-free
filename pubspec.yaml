@@ -32,6 +32,7 @@ dependencies:
     sdk: flutter
 
   provider: ^6.0.2
+  flutter_hooks: ^0.18.6
   shared_preferences: ^2.0.13
   audioplayers: ^3.0.0
   rxdart: ^0.27.7

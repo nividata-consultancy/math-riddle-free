@@ -1,115 +1,139 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-void main() {
-  runApp(const MyApp());
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:logging/logging.dart';
+import 'package:math_riddle/core/app_route.dart';
+import 'package:math_riddle/core/app_theme.dart';
+import 'package:math_riddle/data/audio/audio_controller.dart';
+import 'package:math_riddle/data/crashlytics/crashlytics.dart';
+import 'package:math_riddle/data/persistence/local_storage_settings_persistence.dart';
+import 'package:math_riddle/data/persistence/settings_persistence.dart';
+import 'package:math_riddle/data/player_progress/persistence/local_storage_player_progress_persistence.dart';
+import 'package:math_riddle/data/player_progress/persistence/player_progress_persistence.dart';
+import 'package:math_riddle/data/player_progress/player_progress.dart';
+import 'package:math_riddle/data/setting/settings.dart';
+import 'package:math_riddle/firebase_options.dart';
+import 'package:math_riddle/view/common/app_lifecycle.dart';
+import 'package:provider/provider.dart';
+
+Logger _log = Logger('main.dart');
+
+Future<void> main() async {
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  if (kDebugMode) {
+    Animate.restartOnHotReload = true;
+  }
+  FirebaseCrashlytics? crashlytics;
+
+  if (!kIsWeb && (Platform.isIOS || Platform.isAndroid)) {
+    try {
+      WidgetsFlutterBinding.ensureInitialized();
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+      crashlytics = FirebaseCrashlytics.instance;
+    } catch (e) {
+      debugPrint("Firebase couldn't be initialized: $e");
+    }
+  }
+
+  await guardWithCrashlytics(
+    guardedMain,
+    crashlytics: crashlytics,
+  );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final PlayerProgressPersistence playerProgressPersistence;
+  final SettingsPersistence settingsPersistence;
 
-  // This widget is the root of your application.
+  const MyApp({
+    required this.playerProgressPersistence,
+    required this.settingsPersistence,
+    super.key,
+  });
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Math Riddle',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
+    return AppLifecycleObserver(
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (context) {
+              var progress = PlayerProgress(playerProgressPersistence);
+              progress.getLatestFromStore();
+              return progress;
+            },
+          ),
+          Provider<SettingsController>(
+            lazy: false,
+            create: (context) => SettingsController(
+              persistence: settingsPersistence,
+            )..loadStateFromPersistence(),
+          ),
+          ProxyProvider2<SettingsController, ValueNotifier<AppLifecycleState>,
+              AudioController>(
+            // Ensures that the AudioController is created on startup,
+            // and not "only when it's needed", as is default behavior.
+            // This way, music starts immediately.
+            lazy: false,
+            create: (context) => AudioController()..initialize(),
+            update: (context, settings, lifecycleNotifier, audio) {
+              if (audio == null) throw ArgumentError.notNull();
+              audio.attachSettings(settings);
+              audio.attachLifecycleNotifier(lifecycleNotifier);
+              return audio;
+            },
+            dispose: (context, audio) => audio.dispose(),
+          ),
+        ],
+        child: Builder(builder: (context) {
+          return MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            title: 'Math Riddle',
+            theme: ThemeController.theme(),
+            routeInformationProvider: AppRoute.router.routeInformationProvider,
+            routeInformationParser: AppRoute.router.routeInformationParser,
+            routerDelegate: AppRoute.router.routerDelegate,
+          );
+        }),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+/// Without logging and crash reporting, this would be `void main()`.
+void guardedMain() {
+  if (kReleaseMode) {
+    // Don't log anything below warnings in production.
+    Logger.root.level = Level.WARNING;
   }
+  Logger.root.onRecord.listen((record) {
+    debugPrint('${record.level.name}: ${record.time}: '
+        '${record.loggerName}: '
+        '${record.message}');
+  });
 
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
+  WidgetsFlutterBinding.ensureInitialized();
+
+  _log.info('Going full screen');
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
+  runApp(
+    MyApp(
+      settingsPersistence: LocalStorageSettingsPersistence(),
+      playerProgressPersistence: LocalStoragePlayerProgressPersistence(),
+    ),
+  );
 }
