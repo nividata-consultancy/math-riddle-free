@@ -17,6 +17,8 @@ import 'package:math_riddle/data/persistence/settings_persistence.dart';
 import 'package:math_riddle/data/player_progress/persistence/local_storage_player_progress_persistence.dart';
 import 'package:math_riddle/data/player_progress/persistence/player_progress_persistence.dart';
 import 'package:math_riddle/data/player_progress/player_progress.dart';
+import 'package:math_riddle/data/puzzle/free_puzzle_repository.dart';
+import 'package:math_riddle/data/puzzle/i_puzzle_repository.dart';
 import 'package:math_riddle/data/setting/settings.dart';
 import 'package:math_riddle/firebase_options.dart';
 import 'package:math_riddle/view/common/app_lifecycle.dart';
@@ -54,10 +56,12 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   final PlayerProgressPersistence playerProgressPersistence;
   final SettingsPersistence settingsPersistence;
+  final IPuzzleRepository puzzleRepository;
 
   const MyApp({
     required this.playerProgressPersistence,
     required this.settingsPersistence,
+    required this.puzzleRepository,
     super.key,
   });
 
@@ -66,6 +70,7 @@ class MyApp extends StatelessWidget {
     return AppLifecycleObserver(
       child: MultiProvider(
         providers: [
+          Provider.value(value: puzzleRepository),
           ChangeNotifierProvider(
             create: (context) {
               var progress = PlayerProgress(playerProgressPersistence);
@@ -134,6 +139,7 @@ void guardedMain() {
     MyApp(
       settingsPersistence: LocalStorageSettingsPersistence(),
       playerProgressPersistence: LocalStoragePlayerProgressPersistence(),
+      puzzleRepository: FreePuzzleRepository(),
     ),
   );
 }

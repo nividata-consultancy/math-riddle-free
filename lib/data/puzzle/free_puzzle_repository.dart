@@ -7,7 +7,7 @@ import 'package:math_riddle/data/puzzle/i_puzzle_repository.dart';
 import 'package:math_riddle/extension/list_extension.dart';
 import 'package:math_riddle/extension/string_extension.dart';
 
-class ProPuzzleRepository extends IPuzzleRepository {
+class FreePuzzleRepository extends IPuzzleRepository {
   @override
   List<BaseLevel> getGameLevelByOrder() {
     return getGameLevel()

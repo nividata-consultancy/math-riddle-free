@@ -5,10 +5,10 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:math_riddle/data/persistence/memory_settings_persistence.dart';
 import 'package:math_riddle/data/player_progress/persistence/memory_player_progress_persistence.dart';
+import 'package:math_riddle/data/puzzle/free_puzzle_repository.dart';
 import 'package:math_riddle/main.dart';
 
 void main() {
@@ -17,6 +17,7 @@ void main() {
     await tester.pumpWidget(MyApp(
       settingsPersistence: MemoryOnlySettingsPersistence(),
       playerProgressPersistence: MemoryOnlyPlayerProgressPersistence(),
+      puzzleRepository: FreePuzzleRepository(),
     ));
 
     // // Verify that our counter starts at 0.
