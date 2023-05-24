@@ -1,4 +1,5 @@
-import 'dart:io';
+import 'dart:async';
+import 'dart:isolate';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -8,10 +9,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:logging/logging.dart';
+import 'package:math_riddle/core/app_assets.dart';
 import 'package:math_riddle/core/app_route.dart';
 import 'package:math_riddle/core/app_theme.dart';
 import 'package:math_riddle/data/audio/audio_controller.dart';
-import 'package:math_riddle/data/crashlytics/crashlytics.dart';
 import 'package:math_riddle/data/persistence/local_storage_settings_persistence.dart';
 import 'package:math_riddle/data/persistence/settings_persistence.dart';
 import 'package:math_riddle/data/player_progress/persistence/local_storage_player_progress_persistence.dart';
@@ -27,30 +28,52 @@ import 'package:provider/provider.dart';
 Logger _log = Logger('main.dart');
 
 Future<void> main() async {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  runZonedGuarded<Future<void>>(() async {
+    WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+    FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  if (kDebugMode) {
-    Animate.restartOnHotReload = true;
-  }
-  FirebaseCrashlytics? crashlytics;
-
-  if (!kIsWeb && (Platform.isIOS || Platform.isAndroid)) {
-    try {
-      WidgetsFlutterBinding.ensureInitialized();
-      await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,
-      );
-      crashlytics = FirebaseCrashlytics.instance;
-    } catch (e) {
-      debugPrint("Firebase couldn't be initialized: $e");
+    if (kDebugMode) {
+      Animate.restartOnHotReload = true;
     }
-  }
 
-  await guardWithCrashlytics(
-    guardedMain,
-    crashlytics: crashlytics,
-  );
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
+
+    FirebaseCrashlytics crashlytics = FirebaseCrashlytics.instance;
+
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+
+    Isolate.current.addErrorListener(RawReceivePort((dynamic pair) async {
+      final errorAndStacktrace = pair as List<dynamic>;
+      await crashlytics.recordError(
+          errorAndStacktrace.first, errorAndStacktrace.last as StackTrace?,
+          fatal: true);
+    }).sendPort);
+
+    if (kReleaseMode) {
+      // Don't log anything below warnings in production.
+      Logger.root.level = Level.WARNING;
+    }
+    Logger.root.onRecord.listen((record) {
+      debugPrint('${record.level.name}: ${record.time}: '
+          '${record.loggerName}: '
+          '${record.message}');
+    });
+
+    _log.info('Going full screen');
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+
+    runApp(
+      MyApp(
+        settingsPersistence: LocalStorageSettingsPersistence(),
+        playerProgressPersistence: LocalStoragePlayerProgressPersistence(),
+        puzzleRepository: FreePuzzleRepository(),
+      ),
+    );
+  }, (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack));
 }
 
 class MyApp extends StatelessWidget {
@@ -113,33 +136,4 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
-}
-
-/// Without logging and crash reporting, this would be `void main()`.
-void guardedMain() {
-  if (kReleaseMode) {
-    // Don't log anything below warnings in production.
-    Logger.root.level = Level.WARNING;
-  }
-  Logger.root.onRecord.listen((record) {
-    debugPrint('${record.level.name}: ${record.time}: '
-        '${record.loggerName}: '
-        '${record.message}');
-  });
-
-  WidgetsFlutterBinding.ensureInitialized();
-
-  _log.info('Going full screen');
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
-
-  runApp(
-    MyApp(
-      settingsPersistence: LocalStorageSettingsPersistence(),
-      playerProgressPersistence: LocalStoragePlayerProgressPersistence(),
-      puzzleRepository: FreePuzzleRepository(),
-    ),
-  );
 }

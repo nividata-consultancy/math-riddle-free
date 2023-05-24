@@ -14,9 +14,9 @@ import 'package:logging/logging.dart';
 /// These errors will also include latest logs from anywhere in the app
 /// that use `package:logging`.
 Future<void> guardWithCrashlytics(
-  void Function() mainFunction, {
-  required FirebaseCrashlytics? crashlytics,
-}) async {
+    void Function() mainFunction, {
+      required FirebaseCrashlytics? crashlytics,
+    }) async {
   // Running the initialization code and [mainFunction] inside a guarded
   // zone, so that all errors (even those occurring in callbacks) are
   // caught and can be sent to Crashlytics.

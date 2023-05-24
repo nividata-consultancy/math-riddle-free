@@ -16,8 +16,21 @@ import 'package:math_riddle/view/common/common_text_button_view.dart';
 import 'package:math_riddle/view/neopop_button/constants.dart';
 import 'package:provider/provider.dart';
 
-class MainMenuScreen extends HookWidget {
-  const MainMenuScreen({super.key});
+class MainMenuScreen extends StatefulHookWidget {
+  const MainMenuScreen({Key? key}) : super(key: key);
+
+  @override
+  MainMenuScreenState createState() => MainMenuScreenState();
+}
+
+class MainMenuScreenState extends State<MainMenuScreen> {
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   precacheImage(const AssetImage(AppAssets.bgMain), context).then((value) {
+  //     FlutterNativeSplash.remove();
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +44,8 @@ class MainMenuScreen extends HookWidget {
     final settingsController = context.watch<SettingsController>();
     final audioController = context.watch<AudioController>();
     final playerProgress = context.watch<PlayerProgress>();
-
     FlutterNativeSplash.remove();
+
 
     return Scaffold(
       body: Stack(

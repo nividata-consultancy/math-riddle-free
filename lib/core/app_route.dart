@@ -22,7 +22,7 @@ class AppRoute {
               GoRoute(
                 path: 'session/:level',
                 pageBuilder: (context, state) {
-                  final levelNumber = int.parse(state.params['level']!);
+                  final levelNumber = int.parse(state.pathParameters['level']!);
                   return buildMyTransition<void>(
                     child: PlaySessionScreen(
                       levelNumber,
@@ -66,6 +66,7 @@ class _MyReveal extends StatefulWidget {
   final Widget child;
 
   final Animation<double> animation;
+
 
   const _MyReveal({
     required this.child,
@@ -135,14 +136,12 @@ class _MyRevealState extends State<_MyReveal> {
         setState(() {
           _finished = true;
         });
-        break;
       case AnimationStatus.forward:
       case AnimationStatus.dismissed:
       case AnimationStatus.reverse:
         setState(() {
           _finished = false;
         });
-        break;
     }
   }
 }
