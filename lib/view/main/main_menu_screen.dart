@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 import 'package:math_riddle/core/app_assets.dart';
@@ -26,14 +25,6 @@ class MainMenuScreen extends StatefulHookWidget {
 }
 
 class MainMenuScreenState extends State<MainMenuScreen> {
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   precacheImage(const AssetImage(AppAssets.bgMain), context).then((value) {
-  //     FlutterNativeSplash.remove();
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     useMemoized(() {
@@ -46,7 +37,6 @@ class MainMenuScreenState extends State<MainMenuScreen> {
     final settingsController = context.watch<SettingsController>();
     final audioController = context.watch<AudioController>();
     final playerProgress = context.watch<PlayerProgress>();
-    FlutterNativeSplash.remove();
 
     return Scaffold(
       body: Stack(

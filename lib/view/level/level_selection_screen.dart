@@ -43,16 +43,14 @@ class LevelSelectionScreen extends StatelessWidget {
                 playerProgress.highestLevelReached <= list[index].position - 1
                     ? AppColor.blue
                     : AppColor.white,
-            onPressed:
-                playerProgress.highestLevelReached >= list[index].position - 1
-                    ? () {
+            onPressed: () {
                         final audioController = context.read<AudioController>();
                         audioController.playSfx(SfxType.buttonTap);
 
                         GoRouter.of(context)
                             .go('/play/session/${list[index].position}');
                       }
-                    : null,
+                    ,
           );
         },
       ),

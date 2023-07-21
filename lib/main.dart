@@ -8,7 +8,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:logging/logging.dart';
 import 'package:math_riddle/core/app_route.dart';
 import 'package:math_riddle/core/app_theme.dart';
@@ -18,8 +17,8 @@ import 'package:math_riddle/data/persistence/settings_persistence.dart';
 import 'package:math_riddle/data/player_progress/persistence/local_storage_player_progress_persistence.dart';
 import 'package:math_riddle/data/player_progress/persistence/player_progress_persistence.dart';
 import 'package:math_riddle/data/player_progress/player_progress.dart';
-import 'package:math_riddle/data/puzzle/free_puzzle_repository.dart';
 import 'package:math_riddle/data/puzzle/i_puzzle_repository.dart';
+import 'package:math_riddle/data/puzzle/pro_puzzle_repository.dart';
 import 'package:math_riddle/data/rating/rate_us_controller.dart';
 import 'package:math_riddle/data/setting/settings.dart';
 import 'package:math_riddle/firebase_options.dart';
@@ -30,8 +29,7 @@ Logger _log = Logger('main.dart');
 
 Future<void> main() async {
   runZonedGuarded<Future<void>>(() async {
-    WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-    FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+    WidgetsFlutterBinding.ensureInitialized();
 
     if (kDebugMode) {
       Animate.restartOnHotReload = true;
@@ -86,7 +84,7 @@ Future<void> main() async {
         child: MyApp(
           settingsPersistence: LocalStorageSettingsPersistence(),
           playerProgressPersistence: LocalStoragePlayerProgressPersistence(),
-          puzzleRepository: FreePuzzleRepository(),
+          puzzleRepository: ProPuzzleRepository(),
         ),
       ),
     );
