@@ -8,7 +8,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:logging/logging.dart';
 import 'package:math_riddle/core/app_route.dart';
 import 'package:math_riddle/core/app_theme.dart';
@@ -30,8 +29,7 @@ Logger _log = Logger('main.dart');
 
 Future<void> main() async {
   runZonedGuarded<Future<void>>(() async {
-    WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-    FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+    WidgetsFlutterBinding.ensureInitialized();
 
     if (kDebugMode) {
       Animate.restartOnHotReload = true;

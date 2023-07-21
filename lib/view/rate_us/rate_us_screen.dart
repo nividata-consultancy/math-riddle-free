@@ -6,6 +6,7 @@ import 'package:math_riddle/view/common/common_filled_label_button_view.dart';
 import 'package:math_riddle/view/common/common_text_button_view.dart';
 import 'package:math_riddle/view/neopop_button/constants.dart';
 import 'package:provider/provider.dart';
+import 'package:store_redirect/store_redirect.dart';
 
 class RateUsScreen extends StatelessWidget {
   const RateUsScreen({super.key});
@@ -27,7 +28,7 @@ class RateUsScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const SizedBox(height: 40),
-                 Text(
+                Text(
                   'rate_us'.tr(),
                   style: const TextStyle(
                     fontSize: 24,
@@ -36,7 +37,7 @@ class RateUsScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 14),
-                 Padding(
+                Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
                     "rate_us_text".tr(),
@@ -57,6 +58,7 @@ class RateUsScreen extends StatelessWidget {
                     height: 42,
                     fontSize: 16,
                     onPressed: () {
+                      StoreRedirect.redirect();
                       rateUsController.setRated();
                       GoRouter.of(context).pop();
                     },
