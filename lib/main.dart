@@ -72,7 +72,16 @@ Future<void> main() async {
     runApp(
       EasyLocalization(
         path: 'assets/translations',
-        supportedLocales: const [Locale('en', '')],
+        supportedLocales: const [
+          Locale('en', ''),
+          Locale('es', ''),
+          Locale('fr', ''),
+          Locale('ru', ''),
+          Locale('pt', ''),
+          Locale('id', ''),
+          Locale('ko', ''),
+          Locale('it', ''),
+        ],
         fallbackLocale: const Locale('en', ''),
         child: MyApp(
           settingsPersistence: LocalStorageSettingsPersistence(),

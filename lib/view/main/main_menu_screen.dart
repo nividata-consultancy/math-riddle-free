@@ -14,6 +14,7 @@ import 'package:math_riddle/data/setting/settings.dart';
 import 'package:math_riddle/view/common/align_effect.dart';
 import 'package:math_riddle/view/common/common_filled_label_button_view.dart';
 import 'package:math_riddle/view/common/common_text_button_view.dart';
+import 'package:math_riddle/view/language/language_screen.dart';
 import 'package:math_riddle/view/neopop_button/constants.dart';
 import 'package:provider/provider.dart';
 
@@ -46,7 +47,6 @@ class MainMenuScreenState extends State<MainMenuScreen> {
     final audioController = context.watch<AudioController>();
     final playerProgress = context.watch<PlayerProgress>();
     FlutterNativeSplash.remove();
-
 
     return Scaffold(
       body: Stack(
@@ -112,7 +112,40 @@ class MainMenuScreenState extends State<MainMenuScreen> {
             child: Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 22,
-                vertical: 24,
+                vertical: 32,
+              ),
+              child: InkWell(
+                customBorder: const CircleBorder(),
+                onTap: () async {
+                  audioController.playSfx(SfxType.iconButtonTap);
+                  await showDialog<void>(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (context) {
+                      return const LanguageScreen();
+                    },
+                  );
+                },
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Icon(Icons.language),
+                ),
+              ),
+            ),
+          ),
+          Animate(
+            autoPlay: true,
+            effects: [
+              FadeEffect(
+                delay: 1200.ms,
+                duration: 1200.ms,
+                curve: Curves.elasticOut,
+              ),
+            ],
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 22,
+                vertical: 32,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -203,7 +236,7 @@ class MainMenuScreenState extends State<MainMenuScreen> {
                     children: [
                       Expanded(
                         child: CommonTextButtonView(
-                          label: "levels".toUpperCase(),
+                          label: "levels".tr().toUpperCase(),
                           height: 52,
                           fontWeight: FontWeight.w700,
                           onPressed: () {
