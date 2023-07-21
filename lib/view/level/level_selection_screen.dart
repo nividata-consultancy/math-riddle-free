@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:math_riddle/core/app_colors.dart';
@@ -43,14 +44,17 @@ class LevelSelectionScreen extends StatelessWidget {
                 playerProgress.highestLevelReached <= list[index].position - 1
                     ? AppColor.blue
                     : AppColor.white,
-            onPressed: () {
-                        final audioController = context.read<AudioController>();
-                        audioController.playSfx(SfxType.buttonTap);
+            onPressed: playerProgress.highestLevelReached >=
+                        list[index].position - 1 ||
+                    kDebugMode
+                ? () {
+                    final audioController = context.read<AudioController>();
+                    audioController.playSfx(SfxType.buttonTap);
 
-                        GoRouter.of(context)
-                            .go('/play/session/${list[index].position}');
-                      }
-                    ,
+                    GoRouter.of(context)
+                        .go('/play/session/${list[index].position}');
+                  }
+                : null,
           );
         },
       ),
