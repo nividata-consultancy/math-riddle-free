@@ -13,12 +13,14 @@ import 'package:math_riddle/data/model/option.dart';
 import 'package:math_riddle/data/model/score.dart';
 import 'package:math_riddle/data/player_progress/player_progress.dart';
 import 'package:math_riddle/data/puzzle/i_puzzle_repository.dart';
+import 'package:math_riddle/data/rating/rate_us_controller.dart';
 import 'package:math_riddle/view/common/common_scaffold_view.dart';
 import 'package:math_riddle/view/common/image_option_view.dart';
 import 'package:math_riddle/view/common/numpad_view.dart';
 import 'package:math_riddle/view/common/option_view.dart';
 import 'package:math_riddle/view/hint/hint_screen.dart';
 import 'package:math_riddle/view/level/level_state.dart';
+import 'package:math_riddle/view/rate_us/rate_us_screen.dart';
 import 'package:math_riddle/view/win/win_game_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
@@ -281,6 +283,27 @@ class _LevelStateScreenState extends State<LevelStateScreen> {
           widget.puzzleRepository.getGameLevelByOrder().length + 1) {
         _startOfPlay = DateTime.now();
         context.read<LevelState>().levelUp(newId: level.id + 1);
+        RateUsController rateUsController = context.read<RateUsController>();
+        if (level.id + 1 == 10 &&
+            !rateUsController.isRemindMeLater &&
+            !rateUsController.isRated) {
+          await showDialog<void>(
+            context: context,
+            builder: (context) {
+              return const RateUsScreen();
+            },
+          );
+        } else if (level.id + 1 == 25 &&
+            rateUsController.isRemindMeLater &&
+            !rateUsController.is2ndTimeRemindMeLater &&
+            !rateUsController.isRated) {
+          await showDialog<void>(
+            context: context,
+            builder: (context) {
+              return const RateUsScreen();
+            },
+          );
+        }
       } else {
         GoRouter.of(context).pop();
       }

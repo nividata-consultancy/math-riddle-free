@@ -9,7 +9,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:logging/logging.dart';
-import 'package:math_riddle/core/app_assets.dart';
 import 'package:math_riddle/core/app_route.dart';
 import 'package:math_riddle/core/app_theme.dart';
 import 'package:math_riddle/data/audio/audio_controller.dart';
@@ -20,6 +19,7 @@ import 'package:math_riddle/data/player_progress/persistence/player_progress_per
 import 'package:math_riddle/data/player_progress/player_progress.dart';
 import 'package:math_riddle/data/puzzle/free_puzzle_repository.dart';
 import 'package:math_riddle/data/puzzle/i_puzzle_repository.dart';
+import 'package:math_riddle/data/rating/rate_us_controller.dart';
 import 'package:math_riddle/data/setting/settings.dart';
 import 'package:math_riddle/firebase_options.dart';
 import 'package:math_riddle/view/common/app_lifecycle.dart';
@@ -106,6 +106,10 @@ class MyApp extends StatelessWidget {
             create: (context) => SettingsController(
               persistence: settingsPersistence,
             )..loadStateFromPersistence(),
+          ),
+          Provider<RateUsController>(
+            lazy: false,
+            create: (context) => RateUsController(store: playerProgressPersistence),
           ),
           ProxyProvider2<SettingsController, ValueNotifier<AppLifecycleState>,
               AudioController>(

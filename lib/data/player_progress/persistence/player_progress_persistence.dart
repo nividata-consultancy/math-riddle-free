@@ -6,4 +6,20 @@ abstract class PlayerProgressPersistence {
   Future<int> getHighestLevelReached();
 
   Future<void> saveHighestLevelReached(int level);
+
+  Future<int> getAppOpenCount();
+
+  Future<void> setAppOpenCount();
+
+  Future<bool> isRated();
+
+  Future<void> setRated();
+
+  Future<bool> isRemindMeLater();
+
+  Future<bool> is2ndTimeRemindMeLater();
+
+  Future<void> setRemindMeLater();
+
+  Future<void> set2ndTimeRemindMeLater();
 }
