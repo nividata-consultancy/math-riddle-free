@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:isolate';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -36,6 +37,8 @@ Future<void> main() async {
       Animate.restartOnHotReload = true;
     }
 
+    await EasyLocalization.ensureInitialized();
+
     await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform);
 
@@ -67,10 +70,15 @@ Future<void> main() async {
     ]);
 
     runApp(
-      MyApp(
-        settingsPersistence: LocalStorageSettingsPersistence(),
-        playerProgressPersistence: LocalStoragePlayerProgressPersistence(),
-        puzzleRepository: FreePuzzleRepository(),
+      EasyLocalization(
+        path: 'assets/translations',
+        supportedLocales: const [Locale('en', '')],
+        fallbackLocale: const Locale('en', ''),
+        child: MyApp(
+          settingsPersistence: LocalStorageSettingsPersistence(),
+          playerProgressPersistence: LocalStoragePlayerProgressPersistence(),
+          puzzleRepository: FreePuzzleRepository(),
+        ),
       ),
     );
   }, (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack));
@@ -109,7 +117,8 @@ class MyApp extends StatelessWidget {
           ),
           Provider<RateUsController>(
             lazy: false,
-            create: (context) => RateUsController(store: playerProgressPersistence),
+            create: (context) =>
+                RateUsController(store: playerProgressPersistence),
           ),
           ProxyProvider2<SettingsController, ValueNotifier<AppLifecycleState>,
               AudioController>(
@@ -130,6 +139,9 @@ class MyApp extends StatelessWidget {
         child: Builder(builder: (context) {
           return MaterialApp.router(
             debugShowCheckedModeBanner: false,
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
             title: 'Math Riddle',
             theme: ThemeController.theme(),
             routeInformationProvider: AppRoute.router.routeInformationProvider,

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:math_riddle/data/audio/audio_controller.dart';
@@ -29,9 +30,9 @@ class HintScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const SizedBox(height: 40),
-                const Text(
-                  'Hint',
-                  style: TextStyle(
+                Text(
+                  'hint'.tr(),
+                  style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w600,
                     fontFamily: "Roboto",
@@ -55,7 +56,7 @@ class HintScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 40),
                   child: CommonFilledLabelButtonView(
                     depth: kMediumButtonDepth,
-                    label: "Ok".toUpperCase(),
+                    label: "ok".tr().toUpperCase(),
                     height: 42,
                     fontSize: 16,
                     onPressed: () {

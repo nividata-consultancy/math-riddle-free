@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
@@ -48,9 +49,9 @@ class WinGameScreen extends HookWidget {
                           repeat: false,
                         ),
                         const SizedBox(height: 20),
-                        const Text(
-                          'You Won!',
-                          style: TextStyle(
+                        Text(
+                          "you_won".tr(),
+                          style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w600,
                             fontFamily: "Roboto",
@@ -58,7 +59,7 @@ class WinGameScreen extends HookWidget {
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          'Time: ${score.formattedTime}',
+                          "${"time".tr()}: ${score.formattedTime}",
                           style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
@@ -68,7 +69,7 @@ class WinGameScreen extends HookWidget {
                         const SizedBox(height: 30),
                         CommonFilledLabelButtonView(
                           depth: kMediumButtonDepth,
-                          label: "Continue".toUpperCase(),
+                          label: "continue".tr().toUpperCase(),
                           height: 42,
                           fontSize: 16,
                           onPressed: () {

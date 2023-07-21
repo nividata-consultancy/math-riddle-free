@@ -1,0 +1,23 @@
+{
+  "play": "Play",
+  "levels": "Levels",
+  "level": "Level",
+  "you_won": "You Won!",
+  "time": "Time",
+  "continue": "Continue",
+  "hint": "Hint",
+  "ok": "Ok",
+  "enter": "Enter",
+  "rate_us": "Rate Us",
+  "rate": "Rate",
+  "later": "Later",
+  "rate_us_text": "Thank you for playing our puzzle game!  We would greatly appreciate it if you could take a moment to rate our game.\nYour support means a lot to us. Happy puzzling!",
+  "100_question": "Can you find the missing number?",
+  "100_hint": "Add the previous sum to next question.",
+  "104_question": "Which is the odd one out?",
+  "104_hint": "Focus on shape and color.",
+  "105_question": "Which is the odd one out?",
+  "105_hint": "Focus on the inner triangle.",
+  "112_question": "Which is the missing square?",
+  "112_hint": "Rotate the triangle to the left side."
+}

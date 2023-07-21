@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -182,7 +183,7 @@ class MainMenuScreenState extends State<MainMenuScreen> {
                 children: [
                   CommonFilledLabelButtonView(
                     depth: kButtonDepth,
-                    label: "Play".toUpperCase(),
+                    label: "play".tr().toUpperCase(),
                     onPressed: () {
                       audioController.playSfx(SfxType.buttonTap);
                       if (playerProgress.highestLevelReached <
@@ -202,7 +203,7 @@ class MainMenuScreenState extends State<MainMenuScreen> {
                     children: [
                       Expanded(
                         child: CommonTextButtonView(
-                          label: "Levels".toUpperCase(),
+                          label: "levels".toUpperCase(),
                           height: 52,
                           fontWeight: FontWeight.w700,
                           onPressed: () {

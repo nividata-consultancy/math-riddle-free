@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:math_riddle/data/rating/rate_us_controller.dart';
@@ -26,21 +27,21 @@ class RateUsScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const SizedBox(height: 40),
-                const Text(
-                  'Rate Us',
-                  style: TextStyle(
+                 Text(
+                  'rate_us'.tr(),
+                  style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w600,
                     fontFamily: "Roboto",
                   ),
                 ),
                 const SizedBox(height: 14),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
+                 Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
-                    "Thank you for playing our puzzle game!  We would greatly appreciate it if you could take a moment to rate our game.\nYour support means a lot to us. Happy puzzling!",
+                    "rate_us_text".tr(),
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w400,
                       fontFamily: "Roboto",
@@ -52,7 +53,7 @@ class RateUsScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 40),
                   child: CommonFilledLabelButtonView(
                     depth: kMediumButtonDepth,
-                    label: "Rate".toUpperCase(),
+                    label: "rate".tr().toUpperCase(),
                     height: 42,
                     fontSize: 16,
                     onPressed: () {
@@ -66,7 +67,7 @@ class RateUsScreen extends StatelessWidget {
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(horizontal: 40),
                   child: CommonTextButtonView(
-                    label: "Later".toUpperCase(),
+                    label: "later".tr().toUpperCase(),
                     height: 42,
                     fontWeight: FontWeight.w700,
                     onPressed: () {

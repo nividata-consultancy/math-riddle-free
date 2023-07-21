@@ -10,17 +10,17 @@ class LevelState extends LevelBase {
   List<Option> optionList = [];
 
   LevelState({
-    required super.id,
+    required super.position,
     required super.puzzleRepository,
   }) {
-    _setUpNewLevel(id: id);
+    _setUpNewLevel(position: position);
   }
 
-  void _setUpNewLevel({required int id}) {
+  void _setUpNewLevel({required int position}) {
     input = "";
     level = puzzleRepository
         .getGameLevelByOrder()
-        .firstWhere((element) => element.id == id);
+        .firstWhere((element) => element.position == position);
     if (level.gameType != GameType.numpad) {
       optionList = (level as OptionLevel).optionList;
     } else {
@@ -71,7 +71,7 @@ class LevelState extends LevelBase {
   }
 
   @override
-  void levelUp({required int newId}) {
-    _setUpNewLevel(id: newId);
+  void levelUp({required int newPosition}) {
+    _setUpNewLevel(position: newPosition);
   }
 }

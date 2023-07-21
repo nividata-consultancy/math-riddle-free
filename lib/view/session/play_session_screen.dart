@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
@@ -27,9 +28,9 @@ import 'package:tuple/tuple.dart';
 import 'package:wakelock/wakelock.dart';
 
 class PlaySessionScreen extends StatelessWidget {
-  final int id;
+  final int position;
 
-  const PlaySessionScreen(this.id, {super.key});
+  const PlaySessionScreen(this.position, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,13 +39,13 @@ class PlaySessionScreen extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (context) => LevelState(
-            id: id,
+            position: position,
             puzzleRepository: puzzleRepository,
           ),
         ),
       ],
       child: LevelStateScreen(
-        id,
+        position,
         puzzleRepository,
       ),
     );
@@ -52,10 +53,10 @@ class PlaySessionScreen extends StatelessWidget {
 }
 
 class LevelStateScreen extends StatefulWidget {
-  final int id;
+  final int position;
   final IPuzzleRepository puzzleRepository;
 
-  const LevelStateScreen(this.id, this.puzzleRepository, {super.key});
+  const LevelStateScreen(this.position, this.puzzleRepository, {super.key});
 
   @override
   State<LevelStateScreen> createState() => _LevelStateScreenState();
@@ -88,16 +89,16 @@ class _LevelStateScreenState extends State<LevelStateScreen> {
   Widget build(BuildContext context) {
     return CommonScaffoldView(
       title: Selector<LevelState, int>(
-        selector: (p0, p1) => p1.level.id,
+        selector: (p0, p1) => p1.level.position,
         builder: (context, value, child) {
-          return Text("Level $value");
+          return Text("${"level".tr()} $value");
         },
       ),
       actions: [
-        Selector<LevelState, String>(
-          selector: (p0, p1) => p1.level.hint,
+        Selector<LevelState, int>(
+          selector: (p0, p1) => p1.level.id,
           builder: (context, value, child) {
-            return value.isEmpty
+            return "${value}_hint".tr().isEmpty
                 ? const SizedBox()
                 : IconButton(
                     icon: const Icon(Icons.help_outline),
@@ -107,7 +108,7 @@ class _LevelStateScreenState extends State<LevelStateScreen> {
                       await showDialog<void>(
                         context: context,
                         builder: (context) {
-                          return HintScreen(hint: value);
+                          return HintScreen(hint: "${value}_hint".tr());
                         },
                       );
                     },
@@ -123,14 +124,14 @@ class _LevelStateScreenState extends State<LevelStateScreen> {
                 const SizedBox(height: 24),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Selector<LevelState, Tuple2<int, String>>(
+                  child: Selector<LevelState, Tuple2<int, int>>(
                     selector: (p0, p1) {
-                      return Tuple2(p1.level.id, p1.level.question);
+                      return Tuple2(p1.level.position, p1.level.id);
                     },
                     builder: (context, value, child) {
                       return Text(
                         key: ValueKey(value),
-                        "${value.item2}\n",
+                        "${"${value.item2}_question".tr()}\n",
                         textAlign: TextAlign.center,
                         maxLines: 2,
                         style: const TextStyle(
@@ -153,7 +154,7 @@ class _LevelStateScreenState extends State<LevelStateScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: Selector<LevelState, Tuple2<int, String>>(
                       selector: (p0, p1) {
-                        return Tuple2(p1.level.id, p1.level.image);
+                        return Tuple2(p1.level.position, p1.level.image);
                       },
                       builder: (context, value, child) {
                         return Image.asset(
@@ -252,16 +253,16 @@ class _LevelStateScreenState extends State<LevelStateScreen> {
 
   Future<void> _playerWon() async {
     BaseLevel level = context.read<LevelState>().level;
-    _log.info('Level ${level.id} won');
+    _log.info('Level ${level.position} won');
 
     final score = Score(
-      level.id,
+      level.position,
       level.difficulty,
       DateTime.now().difference(_startOfPlay),
     );
 
     final playerProgress = context.read<PlayerProgress>();
-    playerProgress.setLevelReached(level.id);
+    playerProgress.setLevelReached(level.position);
 
     // Let the player see the game just after winning for a bit.
     await Future<void>.delayed(_preCelebrationDuration);
@@ -279,12 +280,12 @@ class _LevelStateScreenState extends State<LevelStateScreen> {
     );
     await Future<void>.delayed(_celebrationDuration);
     if (mounted) {
-      if (level.id + 1 <
+      if (level.position + 1 <
           widget.puzzleRepository.getGameLevelByOrder().length + 1) {
         _startOfPlay = DateTime.now();
-        context.read<LevelState>().levelUp(newId: level.id + 1);
+        context.read<LevelState>().levelUp(newPosition: level.position + 1);
         RateUsController rateUsController = context.read<RateUsController>();
-        if (level.id + 1 == 10 &&
+        if (level.position + 1 == 10 &&
             !rateUsController.isRemindMeLater &&
             !rateUsController.isRated) {
           await showDialog<void>(
@@ -293,7 +294,7 @@ class _LevelStateScreenState extends State<LevelStateScreen> {
               return const RateUsScreen();
             },
           );
-        } else if (level.id + 1 == 25 &&
+        } else if (level.position + 1 == 25 &&
             rateUsController.isRemindMeLater &&
             !rateUsController.is2ndTimeRemindMeLater &&
             !rateUsController.isRated) {
@@ -313,7 +314,7 @@ class _LevelStateScreenState extends State<LevelStateScreen> {
   Future<void> _playerWrong() async {
     animationController.forward(from: 0);
     BaseLevel level = context.read<LevelState>().level;
-    _log.info('Level ${level.id} wrong');
+    _log.info('Level ${level.position} wrong');
 
     if (!mounted) return;
 

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:math_riddle/core/app_colors.dart';
 import 'package:math_riddle/view/neopop_button/constants.dart';
@@ -69,9 +70,9 @@ class CommonFilledEnterButtonView extends StatelessWidget {
           color: AppColor.green,
           constraints: BoxConstraints.expand(height: height),
           alignment: Alignment.center,
-          child: const Text(
-            "Enter",
-            style: TextStyle(
+          child: Text(
+            "enter".tr(),
+            style: const TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w500,
               color: Colors.white,

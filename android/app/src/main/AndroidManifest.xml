@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mathgame.riddles.puzzles.brain.teasers">
    <application
-        android:label="math_riddle"
+        android:label="Math Riddle"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

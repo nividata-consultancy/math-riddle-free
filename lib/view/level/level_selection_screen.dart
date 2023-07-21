@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:math_riddle/core/app_colors.dart';
@@ -20,7 +21,7 @@ class LevelSelectionScreen extends StatelessWidget {
     final list = puzzleRepository.getGameLevelByOrder();
 
     return CommonScaffoldView(
-      title: const Text("Levels"),
+      title: Text("levels".tr()),
       body: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 6,
@@ -32,22 +33,26 @@ class LevelSelectionScreen extends StatelessWidget {
           return CommonFilledLabelButtonView(
             depth: kSmallButtonDepth,
             isLevels: true,
-            label: "${list[index].id}",
+            label: "${list[index].position}",
             fontSize: 16,
-            textColor: playerProgress.highestLevelReached <= list[index].id - 1
-                ? AppColor.white
-                : AppColor.black,
-            color: playerProgress.highestLevelReached <= list[index].id - 1
-                ? AppColor.blue
-                : AppColor.white,
-            onPressed: playerProgress.highestLevelReached >= list[index].id - 1
-                ? () {
-                    final audioController = context.read<AudioController>();
-                    audioController.playSfx(SfxType.buttonTap);
+            textColor:
+                playerProgress.highestLevelReached <= list[index].position - 1
+                    ? AppColor.white
+                    : AppColor.black,
+            color:
+                playerProgress.highestLevelReached <= list[index].position - 1
+                    ? AppColor.blue
+                    : AppColor.white,
+            onPressed:
+                playerProgress.highestLevelReached >= list[index].position - 1
+                    ? () {
+                        final audioController = context.read<AudioController>();
+                        audioController.playSfx(SfxType.buttonTap);
 
-                    GoRouter.of(context).go('/play/session/${list[index].id}');
-                  }
-                : null,
+                        GoRouter.of(context)
+                            .go('/play/session/${list[index].position}');
+                      }
+                    : null,
           );
         },
       ),

@@ -15,7 +15,7 @@ class FreePuzzleRepository extends IPuzzleRepository {
           getLevelOrder(),
           (p0) => p0.id,
         )
-        .mapIndexed((i, e) => e.copyWith(id: i + 1))
+        .mapIndexed((i, e) => e.copyWith(position: i + 1))
         .toList();
   }
 
@@ -25,16 +25,12 @@ class FreePuzzleRepository extends IPuzzleRepository {
       BaseLevel(
         id: 100,
         difficulty: 5,
-        question: "Can you find the missing number?",
-        hint: "Add the previous sum to next question.",
         image: 100.toImagePath(),
         answer: "40",
       ),
       OptionLevel(
         id: 104,
         difficulty: 5,
-        question: "Which is the odd one out?",
-        hint: "Focus on shape and color.",
         image: 104.toImagePath(),
         answer: "F",
         optionList: abcdefOption,
@@ -42,16 +38,12 @@ class FreePuzzleRepository extends IPuzzleRepository {
       OptionLevel(
         id: 105,
         difficulty: 5,
-        question: "Which is the odd one out?",
-        hint: "Focus on inner triangle.",
         image: 105.toImagePath(),
         answer: "B",
       ),
       ImageOptionLevel(
         id: 112,
         difficulty: 5,
-        question: "Which is the missing square?",
-        hint: "Rotate triangle to the left side.",
         image: 112.toImagePath(),
         answer: "B",
         optionList: 112.toAbcdOptionImagePath(),

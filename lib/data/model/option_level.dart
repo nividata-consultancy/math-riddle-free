@@ -6,11 +6,10 @@ class OptionLevel extends BaseLevel {
   final List<Option> optionList;
 
   const OptionLevel({
+    super.position,
     required super.id,
     super.gameType = GameType.option,
     required super.difficulty,
-    required super.question,
-    super.hint,
     required super.image,
     required super.answer,
     this.optionList = abcdOption,
@@ -18,21 +17,19 @@ class OptionLevel extends BaseLevel {
 
   @override
   OptionLevel copyWith({
+    int? position,
     int? id,
     GameType? gameType,
     int? difficulty,
-    String? question,
-    String? hint,
     String? image,
     String? answer,
     List<Option>? optionList,
   }) {
     return OptionLevel(
+      position: position ?? this.position,
       id: id ?? this.id,
       gameType: gameType ?? this.gameType,
       difficulty: difficulty ?? this.difficulty,
-      question: question ?? this.question,
-      hint: hint ?? this.hint,
       image: image ?? this.image,
       answer: answer ?? this.answer,
       optionList: optionList ?? this.optionList,
