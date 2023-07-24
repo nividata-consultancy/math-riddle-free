@@ -21,10 +21,78 @@ Welcome to Math Riddle, the ultimate brain workout game designed to elevate your
 
 ## Game Type
 Math Riddle features three different types of games, each offering unique challenges:
+```dart
+enum GameType {
+  numpad,
+  option,
+  imageOption,
+}
+```
 | <img src="screenshots/Screenshot-01.webp"> | <img src="screenshots/Screenshot-03.webp"> | <img src="screenshots/Screenshot-02.webp"> | <img src="screenshots/Screenshot-04.webp">  |
 |:-------------------------------------------------------------------------------------------:|:---:|:---:|:---:|
-| Numpad | Option(abcd) | Option(other) | ImageOption  |
+| Numpad | Option(abcd) | Option(abcdef) | ImageOption  |
 
+
+## Puzzle Models
+The game is built around a set of models that represent different puzzle levels:
+1. **Numpad**:
+    - In this type of puzzle, you will be presented with a question or a sequence that requires a numeric answer. Use the virtual numpad to input your solution and proceed to the next level.
+    - Its will created with `BaseLevel` class like this
+```dart
+BaseLevel(
+  id: 100,                   //Unique id for this puzzle
+  difficulty: 5,             //Currently its not used 
+  image: 100.toImagePath(),  //Image path of this puzzle
+  answer: "40",              //Numerical answer
+)
+```
+2. **Option**:
+    - Test your skills with multiple-choice questions. You'll be given a question along with a set of options, such as (a), (b), (c), (d), or any even number of options. Choose the correct option and move on to the next challenge.
+    - Its has predefine `ABCD` option and you can create your custom option like `ABCDEF` or `1,2,3,4` etc.
+    - To create an "Option" puzzle, you can use the OptionLevel class like this:
+```dart
+OptionLevel(
+  id: 105,
+  difficulty: 5,
+  image: 105.toImagePath(),
+  answer: "B",              //Answer from below optionList
+  optionList: [             // List of options for the puzzle
+    const Option(name: "A", isSelected: false),  //isSelected is `false` by default
+    const Option(name: "B", isSelected: false),
+    const Option(name: "C", isSelected: false),
+    const Option(name: "D", isSelected: false),
+  ],
+)
+```
+3. **ImageOption**:
+    - Engage in image-based puzzles with multiple-choice options. These puzzles include an image along with the corresponding options. Select the correct option based on the image content, and advance through the game.
+    - To create an "ImageOption" puzzle, you can use the ImageOptionLevel class like this:
+```dart
+ImageOptionLevel(
+  id: 112,
+  difficulty: 5,
+  image: 112.toImagePath(),
+  answer: "B",                   //Answer from below optionList
+  optionList: [                  // List of options for the image-based puzzle
+    ImageOption(
+      name: "A",                 //Image option(which will cross check with answer)         
+      image: 112.toOptionImagePath(type: "a"),//Image option path
+    ),
+    ImageOption(
+      name: "B",
+      image: 112.toOptionImagePath(type: "b"),
+    ),
+    ImageOption(
+      name: "C",
+      image: 112.toOptionImagePath(type: "c"),
+    ),
+    ImageOption(
+      name: "D",
+      image: 112.toOptionImagePath(type: "d"),
+    ),
+  ],
+)
+```
 
 <!-- CONTRIBUTING -->
 ## Contributing
