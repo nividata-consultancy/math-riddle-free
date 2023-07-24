@@ -38,12 +38,20 @@ Contributions are what make the open source community such an amazing place to b
 [Mehul Makwana](https://www.linkedin.com/in/mehul-makwana-430326b9/)
 
 <!-- ACKNOWLEDGEMENTS -->
-## This app using following awesome open source libraries
+## This app using following packages
 
 * [provider](https://pub.dev/packages/provider)
-* [vsync_provider](https://pub.dev/packages/vsync_provider)
-* [get_it](https://pub.dev/packages/get_it)
+* [flutter_hooks](https://pub.dev/packages/flutter_hooks)
+* [audioplayers](https://pub.dev/packages/audioplayers)
 * [shared_preferences](https://pub.dev/packages/shared_preferences)
-* [flutter_svg](https://pub.dev/packages/flutter_svg)
+* [rxdart](https://pub.dev/packages/rxdart)
+* [wakelock](https://pub.dev/packages/wakelock)
+* [store_redirect](https://pub.dev/packages/store_redirect)
+* [lottie](https://pub.dev/packages/lottie)
+* [flutter_animate](https://pub.dev/packages/flutter_animate)
+* [go_router](https://pub.dev/packages/go_router)
+* [logging](https://pub.dev/packages/logging)
+* [collection](https://pub.dev/packages/collection)
+* [easy_localization](https://pub.dev/packages/easy_localization)
 * [tuple](https://pub.dev/packages/tuple)
-* [package_info](https://pub.dev/packages/package_info)
+* [google_fonts](https://pub.dev/packages/google_fonts)
