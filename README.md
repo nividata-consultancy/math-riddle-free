@@ -19,6 +19,9 @@
 
 Welcome to Math Riddle, the ultimate brain workout game designed to elevate your cognitive abilities and keep your mind sharp! With 40+ unique math-based riddles and observation puzzles, challenge your memory, focus, and problem-solving skills. Whether you're looking to improve your IQ or simply have fun, Math Riddle offers an easy-to-use interface and multiple difficulty levels to keep you engaged. Play anytime, anywhere, as the game is fully offline playable. Get ready for an intriguing mental journey that becomes more captivating with each level!
 
+## Game Type
+Math Riddle features three different types of games, each offering unique challenges:
+
 <!-- CONTRIBUTING -->
 ## Contributing
 
