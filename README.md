@@ -48,7 +48,7 @@ BaseLevel(
 ```
 2. **Option**:
     - Test your skills with multiple-choice questions. You'll be given a question along with a set of options, such as (a), (b), (c), (d), or any even number of options. Choose the correct option and move on to the next challenge.
-    - Its has predefine `ABCD` option and you can create your custom option like `ABCDEF` or `1,2,3,4` etc.
+    - Its has predefine `ABCD` option or You can create your custom option like `ABCDEF` or `1,2,3,4` etc.
     - To create an "Option" puzzle, you can use the OptionLevel class like this:
 ```dart
 OptionLevel(
