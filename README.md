@@ -21,6 +21,10 @@ Welcome to Math Riddle, the ultimate brain workout game designed to elevate your
 
 ## Game Type
 Math Riddle features three different types of games, each offering unique challenges:
+| <img src="screenshots/Screenshot-01.webp"> | <img src="screenshots/Screenshot-03.webp"> | <img src="screenshots/Screenshot-02.webp"> | <img src="screenshots/Screenshot-04.webp">  |
+|:-------------------------------------------------------------------------------------------:|:---:|:---:|:---:|
+| Numpad | Option(abcd) | Option(other) | ImageOption  |
+
 
 <!-- CONTRIBUTING -->
 ## Contributing
