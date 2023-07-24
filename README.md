@@ -1,16 +1,15 @@
-# math_riddle
+<br />
+<p align="center">
+  <a href="https://github.com/jaysavsani07/math-metrix">
+    <img src="android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png">
+  </a>
 
-A new Flutter project.
+  <h3 align="center">Math Riddle : Puzzle & Brain Games</h3>
 
-## Getting Started
+  <p align="center">
+    <a href="https://play.google.com/store/apps/details?id=com.mathgame.riddles.puzzles.brain.teasers"><img src="https://github.com/Volorf/Badges/blob/master/Google%20Play/Google%20Play%20Badge.png" height="60" alt="Google Play" title="Math Riddle"/></a>
+  </p>
+</p>
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<h3 align="center">Math Riddles, Puzzle Games, Observation Games Puzzle Solving Game, Brain Workout.</h3>
+<br />
