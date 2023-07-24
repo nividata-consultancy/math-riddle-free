@@ -4,14 +4,23 @@ import 'package:tuple/tuple.dart';
 
 extension ListExtension<T> on List<T> {
   List<T> orderByAnotherList(List<int> order, int Function(T) getId) {
-    assert(order.isNotEmpty, "Game ordering should not be empty.");
-    assert(isNotEmpty, "Game level should not be empty.");
-    assert(order.length == length,
-        "Game ordering and level must have same length.");
     assert(
-        const IterableEquality()
-            .equals(map((e) => getId(e)).toList()..sort(), order..sort()),
-        "Some puzzle are missing as order and puzzle list contains different ids.");
+      order.isNotEmpty,
+      "Game ordering should not be empty.",
+    );
+    assert(
+      isNotEmpty,
+      "Game level should not be empty.",
+    );
+    assert(
+      order.length == length,
+      "Game ordering and level must have same length.",
+    );
+    assert(
+      const IterableEquality()
+          .equals(map((e) => getId(e)).toList()..sort(), order..sort()),
+      "Some puzzle are missing as order and puzzle list contains different ids.",
+    );
 
     return this
       ..sort((a, b) {
