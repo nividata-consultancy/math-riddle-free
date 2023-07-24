@@ -11,7 +11,7 @@
   </p>
 </p>
 
-<h3 align="center">Math Riddles, Puzzle Games, Observation Games Puzzle Solving Game, Brain Workout.</h3>
+<h3 align="center">Math Riddles: Boost Your Brainpower with Fun IQ-Enhancing Games!</h3>
 <br />
 
 | <img src="screenshots/Android-Screen-01.webp"> | <img src="screenshots/Android-Screen-02.webp"> | <img src="screenshots/Android-Screen-03.webp"> | <img src="screenshots/Android-Screen-06.webp">  | <img src="screenshots/Android-Screen-05.webp"> | <img src="screenshots/Android-Screen-07.webp"> |
