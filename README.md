@@ -75,7 +75,7 @@ ImageOptionLevel(
   answer: "B",                   //Answer from below optionList
   optionList: [                  // List of options for the image-based puzzle
     ImageOption(
-      name: "A",                 //Image option(which will cross check with answer)         
+      name: "A",                 //Option name(which will cross check with answer)         
       image: 112.toOptionImagePath(type: "a"),//Image option path
     ),
     ImageOption(
